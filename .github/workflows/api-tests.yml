@@ -1,0 +1,62 @@
+name: API Tests (Playwright)
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore AIProjectTest.slnx
+
+      - name: Build
+        run: dotnet build AIProjectTest.slnx --no-restore
+
+      - name: Install Playwright browsers
+        run: |
+          dotnet build Library.Tests.Api/Library.Tests.Api.csproj
+          pwsh Library.Tests.Api/bin/Debug/net9.0/playwright.ps1 install --with-deps chromium
+
+      - name: Start API server
+        run: |
+          cd Library.WebApi
+          dotnet run --no-build --urls "http://localhost:5090" &
+          echo "Waiting for API to start..."
+          sleep 10
+          # Health check - wait for server to be ready
+          for i in {1..30}; do
+            if curl -s http://localhost:5090/resources > /dev/null 2>&1; then
+              echo "API is ready!"
+              break
+            fi
+            echo "Waiting for API... attempt $i"
+            sleep 2
+          done
+
+      - name: Run Playwright API tests
+        run: |
+          dotnet test Library.Tests.Api/Library.Tests.Api.csproj --no-build \
+            --settings Library.Tests.Api/test.runsettings \
+            --logger "trx;LogFileName=api-test-results.trx"
+        env:
+          LIBRARY_API_BASE_URL: http://localhost:5090
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-results
+          path: Library.Tests.Api/TestResults/
