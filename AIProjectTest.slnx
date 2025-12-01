@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="Library.Application/Library.Application.csproj" Id="792c1c0e-dbe8-454d-bb6f-8c59ae198f3b" />
+  <Project Path="Library.Domain/Library.Domain.csproj" Id="e37ed0b2-1f7f-4613-aad9-42d57f5aae66" />
+  <Project Path="Library.Infrastructure/Library.Infrastructure.csproj" Id="7af25664-75b7-45b9-8374-ec05d34859ef" />
+  <Project Path="Library.Tests.Api/Library.Tests.Api.csproj" Id="3ce504cc-3b4a-440b-888c-ef04b192bff3" />
+  <Project Path="Library.Tests.Integration/Library.Tests.Integration.csproj" Id="03c6a012-b717-4845-b1e8-8b87b766878c" />
+  <Project Path="Library.Tests.Unit/Library.Tests.Unit.csproj" Id="c07952b7-3179-46ff-858d-018a0f3a0eed" />
+  <Project Path="Library.WebApi/Library.WebApi.csproj" Id="22f01262-f389-4322-8798-dc8b7931361f" />
+</Solution>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <EnvironmentVariables>
+      <LIBRARY_API_BASE_URL>http://localhost:5090</LIBRARY_API_BASE_URL>
+    </EnvironmentVariables>
+  </RunConfiguration>
+</RunSettings>
